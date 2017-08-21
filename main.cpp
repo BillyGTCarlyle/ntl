@@ -3,12 +3,14 @@
 #include <iomanip>
 #include <sstream>
 #include <podofo/podofo.h>
+#include <vector>
+#include "parser.h"
 
 using namespace PoDoFo;
 
 void PrintHelp(){
     std::cout << "Usage:" << std::endl;
-    std::cout << " ntp [outputfile.pdf]" << std::endl << std::endl;
+    std::cout << "  ntp [outputfile.pdf]" << std::endl << std::endl;
 }
 
 void DrawDate( const char* pszFilename, const char* documentTitle ) {
@@ -20,7 +22,7 @@ void DrawDate( const char* pszFilename, const char* documentTitle ) {
     PdfPainter painter;
     PdfFont* dateFont;
     PdfFont* titleFont;
-
+    PdfFont* bodyFont;
     pPage = document.CreatePage( PdfPage::CreateStandardPageSize( ePdfPageSize_A4 ) );
 
     if( !pPage ){
@@ -31,6 +33,7 @@ void DrawDate( const char* pszFilename, const char* documentTitle ) {
 
     dateFont = document.CreateFont( "Arial" );
     titleFont = document.CreateFont( "Arial" );
+    bodyFont = document.CreateFont( "Arial" );
     
     /*
      * If the PdfFont object cannot be allocated return an error.
@@ -58,8 +61,7 @@ void DrawDate( const char* pszFilename, const char* documentTitle ) {
     painter.SetColorCMYK(0.5, 0.2, 0.0, 0.3);
     titleFont->SetFontSize( 30.0 );
     painter.SetFont( titleFont );
-    painter.DrawText( pPage->GetPageSize().GetWidth() / 2, pPage-> GetPageSize().GetHeight() - 75, documentTitle );
-
+    painter.DrawText((pPage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), pPage-> GetPageSize().GetHeight() - 75, documentTitle );
     painter.FinishPage();
 
     document.GetInfo()->SetCreator ( PdfString("Billy Carlyle") );
@@ -73,17 +75,18 @@ void DrawDate( const char* pszFilename, const char* documentTitle ) {
      */
     document.Close();
 }
-
-int main( int argc, char* argv[] )
-{
+void DrawContent(char* filePath){
+	parser(filePath);
+	std::vector<std::string> bodyText;
+}
+int main( int argc, char* argv[] ){
     /*
      * Check if a filename was passed as commandline argument.
      * If more than 1 argument or no argument is passed,
      * a help message is displayed and the example application
      * will quit.
      */
-    if( argc != 3 )
-    {
+    if( argc != 4 ){
         PrintHelp();
         return -1;
     }
@@ -94,6 +97,7 @@ int main( int argc, char* argv[] )
          * with the filename of the output file as argument.
          */
          DrawDate( argv[1], argv[2]);
+	 DrawContent(argv[3]);
     } catch( const PdfError & eCode ) {
         /*
          * We have to check if an error has occurred.
