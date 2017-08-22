@@ -6,6 +6,6 @@
 #include <vector>
 #include <string>
 
-void parser(char *fileName);
+void parser(char* filePath, char* fileName);
 extern std::vector<std::string> words;
 #endif

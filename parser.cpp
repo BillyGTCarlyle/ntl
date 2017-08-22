@@ -4,6 +4,7 @@
 #include <vector>
 #include <regex>
 #include "parser.h"
+#include "render.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ smatch matchListTitle;
 smatch matchListItem;
 smatch matchHighlight;
 smatch matchDrawLine;
-void parser(char* filePath){
+void parser(char* filePath, char* fileName){
 	vector<string> words;
 	vector<string> lines;
 	string inLine;
@@ -33,6 +34,7 @@ void parser(char* filePath){
 			lines.push_back(inLine);
 			if(regex_search(inLine, matchTitle, titleEx)){
 				cout << "Title is " << matchTitle.str(1) << endl;
+				DrawTitle(matchTitle.str(1), fileName);
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
