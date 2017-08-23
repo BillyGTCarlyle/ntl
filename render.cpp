@@ -27,25 +27,28 @@
 
 using namespace PoDoFo;
 
-void DrawTitle(std::string documentTitle, const char* pszFilename){
-	PdfStreamedDocument document(pszFilename);
+PdfPage* currentPage;
+
+void DrawTitle(std::string documentTitle, char* fileName){
+	PdfStreamedDocument document(fileName);
 	PdfPage* titlePage;
 	titlePage = document.CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
 		if(!titlePage){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
 	}
+	currentPage = titlePage;
 	PdfFont* dateFont;	
 	PdfPainter titlePainter;
 	PdfFont* titleFont;
 	//Draw Title
 	titleFont = document.CreateFont("Arial");
 	titleFont->SetFontSize(30);
-	titlePainter.SetPage(titlePage);
+	titlePainter.SetPage(currentPage);
 	titlePainter.SetFont(titleFont);
-	titlePainter.DrawText((titlePage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), titlePage-> GetPageSize().GetHeight() - 75, documentTitle );
+	titlePainter.DrawText((currentPage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), currentPage-> GetPageSize().GetHeight() - 75, documentTitle );
 
 	//Draw Date
-	titlePainter.SetPage(titlePage);
+	titlePainter.SetPage(currentPage);
 
 	dateFont = document.CreateFont("Arial");
 
@@ -62,7 +65,7 @@ void DrawTitle(std::string documentTitle, const char* pszFilename){
 	auto dateStr = oss.str();
 	
 	titlePainter.SetFont(dateFont);
-	titlePainter.DrawText(titlePage->GetPageSize().GetWidth() - 98, titlePage->GetPageSize().GetHeight() - 20, dateStr);
+	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - 98, currentPage->GetPageSize().GetHeight() - 20, dateStr);
 	titlePainter.FinishPage();
 
 	//Document information
@@ -71,3 +74,23 @@ void DrawTitle(std::string documentTitle, const char* pszFilename){
 
 	document.Close();
 }
+
+/*void DrawListItem(std::string listItem, char* fileName){	
+ *	PdfStreamedDocument document(fileName);
+ *	PdfFont* listItemFont;
+ *	listItemFont = document.CreateFont("Arial");
+ *	listItemFont->SetFontSize(18.0);
+ *	PdfPainter listItemPainter;
+ *	listItemPainter.SetPage(currentPage);
+ *
+ *	//Draw bullet point
+ *	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 3.0);
+ *	//Draw text
+ *	listItemPainter.SetFont(listItemFont);
+ *	listItemPainter.DrawText(30, currentPage->GetPageSize().GetHeight() - 40, listItem);
+ *	listItemPainter.FinishPage();
+ *
+ *	document.Close();
+ *
+ *}
+ */

@@ -29,5 +29,6 @@
 #include <string>
 #include "parser.h"
 
-void DrawTitle(std::string documentTitle, const char* pszFilename);
+void DrawTitle(std::string documentTitle, char* fileName);
+void DrawListItem(std::string listItem, char* fileName);
 #endif

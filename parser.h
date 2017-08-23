@@ -24,6 +24,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <podofo/podofo.h>
 
 void parser(char* filePath, char* fileName);
 extern std::vector<std::string> words;

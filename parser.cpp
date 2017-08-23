@@ -58,6 +58,7 @@ void parser(char* filePath, char* fileName){
 				cout << "Line detected" << endl;
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
 				cout << "Item: " << matchListItem.str(1) << endl;
+//				DrawListItem(matchListItem.str(1), fileName);
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
 			}
