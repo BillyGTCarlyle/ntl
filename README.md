@@ -7,8 +7,8 @@ The way this is adressed is by using single-character commands for elements such
 Once the .ntl document has been written, presumably once the lecture or meeting is over, the user can then run this program (yet to be formally named) which uses the information held in the document to produce a nicely formatted pdf document.
 This means that the user does not have to bother with manually formatting anything, during or after writing their notes.
 
-## XML Output
-If you prefer to have your notes turned into xml files rather than pdf, Stephan Kreutzer has created an alternative ntl parser which produces an xml output instead.  This project can be found [here](https://github.com/publishing-systems/ntml).
+## Alternative Parser
+Stephan Kreutzer has developed his own parser for NTL, which supports output to raw XML, HTML and PDF.  This project can be found [here](https://github.com/publishing-systems/ntml).
 
 ## Syntax
 More features may be added to the language, but the commands that have currently been established are shown below.
