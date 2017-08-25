@@ -8,7 +8,7 @@ Once the .ntl document has been written, presumably once the lecture or meeting 
 This means that the user does not have to bother with manually formatting anything, during or after writing their notes.
 
 ## Alternative Parser
-Stephan Kreutzer has developed his own parser for NTL, which supports output to raw XML, HTML and PDF.  This project can be found [here](https://github.com/publishing-systems/ntml).
+Stephan Kreutzer has developed his own parser for NTL, which supports output to raw XML, HTML and PDF.  This project can be found [here](https://github.com/publishing-systems/ntl).
 
 ## Syntax
 More features may be added to the language, but the commands that have currently been established are shown below.

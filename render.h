@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2017 Billy Carlyle
+ * Copyright (c) 2017 Billy Carlyle, Stephan Kreutzer
  *
  * This file is part of NTL.
- *  
- *   Ntl is free software: you can redistribute it and/or modify
+ *
+ *   NTL is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -18,7 +18,6 @@
  */
 
 #ifndef render_h
-#pragma once
 #define render_h
 #include <iostream>
 #include <ctime>
@@ -27,8 +26,9 @@
 #include <podofo/podofo.h>
 #include <vector>
 #include <string>
-#include "parser.h"
 
-void DrawTitle(std::string documentTitle, char* fileName);
-void DrawListItem(std::string listItem, char* fileName);
+int InitDocument(char* fileName);
+void DrawTitle(std::string documentTitle);
+void DrawListItem(std::string listItem);
+int CloseDocument();
 #endif

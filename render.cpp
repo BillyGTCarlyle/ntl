@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2017 Billy Carlyle
+ * Copyright (c) 2017 Billy Carlyle, Stephan Kreutzer
  *
  * This file is part of NTL.
- *  
- *   Ntl is free software: you can redistribute it and/or modify
+ *
+ *   NTL is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -17,22 +17,36 @@
  *   along with NTL.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "render.h"
 #include <iostream>
 #include <ctime>
 #include <iomanip>
 #include <sstream>
 #include <podofo/podofo.h>
 #include <vector>
-#include "parser.h"
 
 using namespace PoDoFo;
 
-PdfPage* currentPage;
+PdfPage* currentPage = nullptr;
+PdfStreamedDocument* pDocument = nullptr;
 
-void DrawTitle(std::string documentTitle, char* fileName){
-	PdfStreamedDocument document(fileName);
-	PdfPage* titlePage;
-	titlePage = document.CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
+int InitDocument(char* fileName){
+	if (fileName == nullptr){
+		throw new std::invalid_argument("fileName == nullptr in InitDocument().");
+	}
+	if (pDocument != nullptr){
+		delete pDocument;
+		pDocument = nullptr;
+	}
+	pDocument = new PdfStreamedDocument(fileName);
+	return 0;
+}
+
+void DrawTitle(std::string documentTitle){
+	if (pDocument == nullptr){
+		throw new std::logic_error("DrawTitle() called before InitDocument().");
+	}
+	PdfPage* titlePage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
 		if(!titlePage){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
 	}
@@ -41,7 +55,7 @@ void DrawTitle(std::string documentTitle, char* fileName){
 	PdfPainter titlePainter;
 	PdfFont* titleFont;
 	//Draw Title
-	titleFont = document.CreateFont("Arial");
+	titleFont = pDocument->CreateFont("Arial");
 	titleFont->SetFontSize(30);
 	titlePainter.SetPage(currentPage);
 	titlePainter.SetFont(titleFont);
@@ -50,7 +64,7 @@ void DrawTitle(std::string documentTitle, char* fileName){
 	//Draw Date
 	titlePainter.SetPage(currentPage);
 
-	dateFont = document.CreateFont("Arial");
+	dateFont = pDocument->CreateFont("Arial");
 
 	if(!dateFont){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
@@ -69,28 +83,39 @@ void DrawTitle(std::string documentTitle, char* fileName){
 	titlePainter.FinishPage();
 
 	//Document information
-	document.GetInfo()->SetCreator(PdfString("Billy Carlyle"));
-	document.GetInfo()->SetAuthor(PdfString("Billy Carlyle"));
-
-	document.Close();
+	pDocument->GetInfo()->SetCreator(PdfString("Billy Carlyle"));
+	pDocument->GetInfo()->SetAuthor(PdfString("Billy Carlyle"));
 }
 
-/*void DrawListItem(std::string listItem, char* fileName){	
- *	PdfStreamedDocument document(fileName);
- *	PdfFont* listItemFont;
- *	listItemFont = document.CreateFont("Arial");
- *	listItemFont->SetFontSize(18.0);
- *	PdfPainter listItemPainter;
- *	listItemPainter.SetPage(currentPage);
- *
- *	//Draw bullet point
- *	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 3.0);
- *	//Draw text
- *	listItemPainter.SetFont(listItemFont);
- *	listItemPainter.DrawText(30, currentPage->GetPageSize().GetHeight() - 40, listItem);
- *	listItemPainter.FinishPage();
- *
- *	document.Close();
- *
- *}
- */
+void DrawListItem(std::string listItem){	
+	if (pDocument == nullptr){
+		throw new std::logic_error("DrawListItem() called before InitDocument().");
+	}
+	PdfPage* listItemPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
+		if(!listItemPage){
+		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
+	}
+	currentPage = listItemPage;
+	PdfFont* listItemFont;
+	listItemFont = pDocument->CreateFont("Arial");
+	listItemFont->SetFontSize(18.0);
+	PdfPainter listItemPainter;
+	listItemPainter.SetPage(currentPage);
+
+	//Draw bullet point
+	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 3.0);
+	//Draw text
+	listItemPainter.SetFont(listItemFont);
+	listItemPainter.DrawText(30, currentPage->GetPageSize().GetHeight() - 40, listItem);
+	listItemPainter.FinishPage();
+}
+
+int CloseDocument(){
+	if (pDocument == nullptr){
+		return 1;
+	}
+	pDocument->Close();
+	delete pDocument;
+	pDocument = nullptr;
+	return 0;
+}
