@@ -2,8 +2,8 @@
  * Copyright (c) 2017 Billy Carlyle
  *
  * This file is part of NTL.
- *  
- *   Ntl is free software: you can redistribute it and/or modify
+ *
+ *   NTL is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -24,7 +24,6 @@
 #include <podofo/podofo.h>
 #include <vector>
 #include "parser.h"
-#include "render.h"
 using namespace PoDoFo;
 
 void PrintHelp(){
@@ -41,7 +40,7 @@ int main( int argc, char* argv[] ){
 		PrintHelp();
 		return -1;
 	}
-	if(argv[1] == "help"){
+	if(std::string(argv[1]) == "help"){
 		PrintHelp();
 		return -1;
 	}

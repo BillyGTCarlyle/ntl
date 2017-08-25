@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2017 Billy Carlyle
+ * Copyright (c) 2017 Billy Carlyle, Stephan Kreutzer
  *
  * This file is part of NTL.
- *  
- *   Ntl is free software: you can redistribute it and/or modify
+ *
+ *   NTL is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -49,16 +49,17 @@ void parser(char* filePath, char* fileName){
 	ifstream inFile(filePath);
 	// Open input file
 	if(inFile.is_open()){
+		InitDocument(fileName);
 		while(getline(inFile,inLine)){
 			lines.push_back(inLine);
 			if(regex_search(inLine, matchTitle, titleEx)){
 				cout << "Title is " << matchTitle.str(1) << endl;
-				DrawTitle(matchTitle.str(1), fileName);
+				DrawTitle(matchTitle.str(1));
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
 				cout << "Item: " << matchListItem.str(1) << endl;
-//				DrawListItem(matchListItem.str(1), fileName);
+				DrawListItem(matchListItem.str(1));
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
 			}
@@ -72,6 +73,7 @@ void parser(char* filePath, char* fileName){
 		}
 		cout << words[0] << endl;
 		cout << words[2] << endl;
+		CloseDocument();
 		inFile.close();
 	}else{
 		cout << "Error loading file" << endl;

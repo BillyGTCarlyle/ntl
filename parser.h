@@ -2,8 +2,8 @@
  * Copyright (c) 2017 Billy Carlyle
  *
  * This file is part of NTL.
- *  
- *   Ntl is free software: you can redistribute it and/or modify
+ *
+ *   NTL is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -18,13 +18,11 @@
  */
 
 #ifndef parser_h
-#pragma once
 #define parser_h
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
-#include <podofo/podofo.h>
 
 void parser(char* filePath, char* fileName);
 extern std::vector<std::string> words;
