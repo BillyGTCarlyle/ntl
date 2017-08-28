@@ -22,7 +22,7 @@
 #include <fstream>
 #include "parser.h"
 #include "equation.h"
-
+#include "render.h"
 
 void InitializeDocument(int eqNum, std::string eqString){
 	//Create and set up document
@@ -38,10 +38,10 @@ void InitializeDocument(int eqNum, std::string eqString){
 	output << "\\begin{document} \n";
 	output.close();
 	//Start rendering the actual equation
-	DrawEquation(eqNum, eqString);
+	DrawLatexEquation(eqNum, eqString);
 }
 
-void DrawEquation(int eqNum, std::string eqString){
+void DrawLatexEquation(int eqNum, std::string eqString){
 	std::string Number = std::to_string(eqNum);
 	std::ofstream output(Number+".tex", std::ofstream::out | std::ofstream::app);
 	//Write user-written LaTeX to document
@@ -60,4 +60,6 @@ void EndEquation(int eqNum){
 	output << "\\end{document}";
 	output.close();
 	system(("pdflatex "+Number+".tex").c_str());
+	DrawEquation(eqNum);
 }
+

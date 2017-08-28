@@ -14,8 +14,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with NTL.  If not, see <http://www.gnu.org/licenses/>.
- */
+ *   along with NTL.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "render.h"
 #include <iostream>
@@ -30,7 +29,7 @@ using namespace PoDoFo;
 PdfPage* currentPage = nullptr;
 PdfStreamedDocument* pDocument = nullptr;
 
-int InitDocument(char* fileName){
+int InitDocument(const char* fileName){
 	if (fileName == nullptr){
 		throw new std::invalid_argument("fileName == nullptr in InitDocument().");
 	}
@@ -85,17 +84,13 @@ void DrawTitle(std::string documentTitle){
 	//Document information
 	pDocument->GetInfo()->SetCreator(PdfString("Billy Carlyle"));
 	pDocument->GetInfo()->SetAuthor(PdfString("Billy Carlyle"));
+	NewPage();
 }
 
 void DrawListItem(std::string listItem){	
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
-	}
-	PdfPage* listItemPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
-	if(!listItemPage){
-		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
-	}
-	currentPage = listItemPage;
+	}	
 	PdfFont* listItemFont;
 	listItemFont = pDocument->CreateFont("Arial");
 	listItemFont->SetFontSize(18.0);
@@ -108,6 +103,17 @@ void DrawListItem(std::string listItem){
 	//Draw text
 	listItemPainter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
 	listItemPainter.FinishPage();
+}
+
+void DrawEquation(int eqNum){
+	//Takes equation PDF and appends it to the main document
+	std::string Number = std::to_string(eqNum);
+	PdfMemDocument equation((Number+".pdf").c_str());
+}
+
+void NewPage(){
+	PdfPage* newPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
+	currentPage = newPage;
 }
 
 int CloseDocument(){

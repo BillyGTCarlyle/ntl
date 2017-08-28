@@ -44,7 +44,7 @@ smatch matchHighlight;
 smatch matchDrawLine;
 smatch matchEquation;
 int equationNumber = 0;
-void parser(char* filePath, char* fileName){
+void parser(char* filePath){
 	vector<string> words;
 	vector<string> lines;
 	string inLine;
@@ -54,11 +54,12 @@ void parser(char* filePath, char* fileName){
 	ifstream inFile(filePath);
 	// Open input file
 	if(inFile.is_open()){
-		InitDocument(fileName);
+
 		while(getline(inFile,inLine)){
 			lines.push_back(inLine);
 			if(regex_search(inLine, matchTitle, titleEx)){
 				cout << "Title is " << matchTitle.str(1) << endl;
+				InitDocument((matchTitle.str(1)+".pdf").c_str());
 				DrawTitle(matchTitle.str(1));
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;

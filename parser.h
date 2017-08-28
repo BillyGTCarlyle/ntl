@@ -24,6 +24,6 @@
 #include <vector>
 #include <string>
 
-void parser(char* filePath, char* fileName);
+void parser(char* filePath);
 extern std::vector<std::string> words;
 #endif
