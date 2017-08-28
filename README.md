@@ -7,6 +7,18 @@ The way this is adressed is by using single-character commands for elements such
 Once the .ntl document has been written, presumably once the lecture or meeting is over, the user can then run this program (yet to be formally named) which uses the information held in the document to produce a nicely formatted pdf document.
 This means that the user does not have to bother with manually formatting anything, during or after writing their notes.
 
+## Building the tool
+To build the program in this repo, all you must do is check the program's dependancies, and type
+```
+make all
+```
+into your terminal.  
+### Dependancies
+[PoDoFo](http://podofo.sourceforge.net/)
+[pdfLaTeX](https://tug.org/texlive/)
+
+I personally use the texlive package for building my LaTeX documents but any package which includes the "pdflatex" tool will work with this program, for example [MikTeX](https://miktex.org/) is another option.
+
 ## Alternative Parser
 Stephan Kreutzer has developed his own parser for NTL, which supports output to raw XML, HTML and PDF.  This project can be found [here](https://github.com/publishing-systems/ntl).
 
