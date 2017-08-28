@@ -27,8 +27,10 @@
 #include <vector>
 #include <string>
 
-int InitDocument(char* fileName);
+int InitDocument(const char* fileName);
 void DrawTitle(std::string documentTitle);
 void DrawListItem(std::string listItem);
+void DrawEquation(int eqNum);
+void NewPage();
 int CloseDocument();
 #endif
