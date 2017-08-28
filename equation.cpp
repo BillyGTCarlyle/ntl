@@ -45,9 +45,11 @@ void DrawEquation(int eqNum, std::string eqString){
 	std::string Number = std::to_string(eqNum);
 	std::ofstream output(Number+".tex", std::ofstream::out | std::ofstream::app);
 	//Write user-written LaTeX to document
+	output << "$ ";
 	output << eqString << "\n";
+	output << " $";
 	output.close();
-	//End the document
+	//End the document and build the pdf
 	EndEquation(eqNum);
 }
 
@@ -57,4 +59,5 @@ void EndEquation(int eqNum){
 	//End the document and close the file
 	output << "\\end{document}";
 	output.close();
+	system(("pdflatex "+Number+".tex").c_str());
 }

@@ -7,3 +7,4 @@ This is some general text.
 :: Highlighted text ::
 This is :: higlighted text again :: 
 #e v = \frac{d}{t}
+#e f = f_0\left( 1 - \frac{v}{c} \right)
