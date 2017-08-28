@@ -50,5 +50,11 @@ The above will highlight the words, "center of mass", and in any case will highl
 ```
 The above draws a horizontal line across the page in order to separate information.  The command used is "#b" for "break" since "#l" is already in use.
 
+### Equations
+```
+#e f = f_0\left( 1 = \frac{v}{c} \right)
+```
+Equations are generated using pdflatex, and so at the moment, after the "#e" has been typed, anything else on the line should be written with LaTeX's equation/math syntax.  I do understand, however, that LaTeX can be a little verbose, so at a later stage I will try to abstract it a little so that it's faster to type, but for now it is more important that equations actually work.
+
 ## Additional information
 The development of this language and parser/pdf-generator can be followed live on my [twitch.tv channel](https://www.twitch.tv/that__guy2)
