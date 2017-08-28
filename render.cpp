@@ -92,7 +92,7 @@ void DrawListItem(std::string listItem){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}
 	PdfPage* listItemPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
-		if(!listItemPage){
+	if(!listItemPage){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
 	}
 	currentPage = listItemPage;
@@ -101,12 +101,12 @@ void DrawListItem(std::string listItem){
 	listItemFont->SetFontSize(18.0);
 	PdfPainter listItemPainter;
 	listItemPainter.SetPage(currentPage);
-
-	//Draw bullet point
-	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 3.0);
-	//Draw text
 	listItemPainter.SetFont(listItemFont);
-	listItemPainter.DrawText(30, currentPage->GetPageSize().GetHeight() - 40, listItem);
+	listItemPainter.SetColor(0,0,0);
+	//Draw bullet point
+	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 10.0);
+	//Draw text
+	listItemPainter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
 	listItemPainter.FinishPage();
 }
 
