@@ -27,7 +27,7 @@
 void InitializeDocument(int eqNum, std::string eqString){
 	//Create and set up document
 	std::string Number = std::to_string(eqNum);
-	std::ofstream output(Number+".tex");
+	std::ofstream output(Number+".tex", std::ofstream::out);
 	output << "\\documentclass{article} \n";
 	output << "\\usepackage{amsmath} \n";
 	output << "\\usepackage{amsthm} \n";
@@ -36,16 +36,25 @@ void InitializeDocument(int eqNum, std::string eqString){
 	output << "\\usepackage[active,displaymath,textmath,tightpage]{preview} \n";
 	output << "\\pagestyle{empty} \n";
 	output << "\\begin{document} \n";
+	output.close();
 	//Start rendering the actual equation
 	DrawEquation(eqNum, eqString);
 }
 
 void DrawEquation(int eqNum, std::string eqString){
-	
+	std::string Number = std::to_string(eqNum);
+	std::ofstream output(Number+".tex", std::ofstream::out | std::ofstream::app);
+	//Write user-written LaTeX to document
+	output << eqString << "\n";
+	output.close();
 	//End the document
-	EndEquation();
+	EndEquation(eqNum);
 }
 
-void EndEquation(){
+void EndEquation(int eqNum){
+	std::string Number = std::to_string(eqNum);
+	std::ofstream output(Number+".tex", std::ofstream::out | std::ofstream::app);
+	//End the document and close the file
 	output << "\\end{document}";
+	output.close();
 }

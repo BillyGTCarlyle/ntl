@@ -24,21 +24,26 @@
 #include <regex>
 #include "parser.h"
 #include "render.h"
+#include "equation.h"
 
 using namespace std;
 
+//Initialize regular expressions
 const regex newLineEx("\\\\");
 const regex highlightEx(":: (.*) ::");
 const regex titleEx("#t (.*)");
 const regex listTitleEx("#l(.*)");
 const regex listItemEx("^ (.*)");
 const regex lineEx("#b");
+const regex equationEx("#e (.*)");
 smatch matchTitle;
 smatch matchNewLine;
 smatch matchListTitle;
 smatch matchListItem;
 smatch matchHighlight;
 smatch matchDrawLine;
+smatch matchEquation;
+int equationNumber = 0;
 void parser(char* filePath, char* fileName){
 	vector<string> words;
 	vector<string> lines;
@@ -62,6 +67,10 @@ void parser(char* filePath, char* fileName){
 				DrawListItem(matchListItem.str(1));
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
+			}else if(regex_search(inLine, matchEquation, equationEx)){
+				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
+				InitializeDocument(equationNumber, matchEquation.str(1));
+				equationNumber++;
 			}
 			while((pos = inLine.find(space)) != string::npos){
 				word = inLine.substr(0, pos);

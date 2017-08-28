@@ -26,6 +26,6 @@
 
 void InitializeDocument(int eqNum, std::string eqString);
 void DrawEquation(int eqNum, std::string eqString);
-void EndEquation();
+void EndEquation(int eqNum);
 
 #endif
