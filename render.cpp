@@ -78,7 +78,7 @@ void DrawTitle(std::string documentTitle){
 	auto dateStr = oss.str();
 	
 	titlePainter.SetFont(dateFont);
-	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - 98, currentPage->GetPageSize().GetHeight() - 20, dateStr);
+	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - (dateFont->GetFontMetrics()->StringWidth(dateStr)) - 20, currentPage->GetPageSize().GetHeight() - (dateFont->GetFontMetrics()->GetFontSize()) - 20, dateStr);
 	titlePainter.FinishPage();
 
 	//Document information
