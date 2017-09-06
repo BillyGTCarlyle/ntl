@@ -78,13 +78,39 @@ void DrawTitle(std::string documentTitle){
 	auto dateStr = oss.str();
 	
 	titlePainter.SetFont(dateFont);
-	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - 98, currentPage->GetPageSize().GetHeight() - 20, dateStr);
+	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - (dateFont->GetFontMetrics()->StringWidth(dateStr)) - 20, currentPage->GetPageSize().GetHeight() - (dateFont->GetFontMetrics()->GetFontSize()) - 20, dateStr);
 	titlePainter.FinishPage();
 
 	//Document information
 	pDocument->GetInfo()->SetCreator(PdfString("Billy Carlyle"));
 	pDocument->GetInfo()->SetAuthor(PdfString("Billy Carlyle"));
 	NewPage();
+}
+
+void DrawParagraph(std::string text, bool newPara){
+	PdfFont* paraFont;
+	PdfPainter paraPainter;
+	int yCoordinate;
+
+	paraFont = pDocument->CreateFont("Arial");
+	paraFont->SetFontSize(18.0);
+	paraPainter.SetPage(currentPage);
+	paraPainter.SetFont(paraFont);
+	if(newPara == true){
+		std::cout << "New Paragraph created" << std::endl;
+		if(currentPage->GetPageNumber() == 1){
+			yCoordinate = currentPage->GetPageSize().GetHeight() - 140;
+		}else{
+			yCoordinate = currentPage->GetPageSize().GetHeight() - 75;
+		}
+		paraPainter.BeginText(20, yCoordinate);
+		paraPainter.AddText(text);
+	}else{
+		paraPainter.AddText(text);
+	}
+	paraPainter.EndText();
+	paraPainter.FinishPage();
+	
 }
 
 void DrawListItem(std::string listItem){	

@@ -4,6 +4,5 @@ This is some general text.
 #b
  List item
 :: Highlighted text ::
-This is :: higlighted text again :: 
 #e v = \frac{d}{t}
 #e f = f_0\left( 1 - \frac{v}{c} \right)
