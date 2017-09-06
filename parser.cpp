@@ -72,6 +72,8 @@ void parser(char* filePath){
 				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
 				InitializeDocument(equationNumber, matchEquation.str(1));
 				equationNumber++;
+			}else{
+				DrawParagraph(inLine, true);
 			}
 			while((pos = inLine.find(space)) != string::npos){
 				word = inLine.substr(0, pos);

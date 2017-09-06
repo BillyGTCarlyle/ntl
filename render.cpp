@@ -87,6 +87,32 @@ void DrawTitle(std::string documentTitle){
 	NewPage();
 }
 
+void DrawParagraph(std::string text, bool newPara){
+	PdfFont* paraFont;
+	PdfPainter paraPainter;
+	int yCoordinate;
+
+	paraFont = pDocument->CreateFont("Arial");
+	paraFont->SetFontSize(18.0);
+	paraPainter.SetPage(currentPage);
+	paraPainter.SetFont(paraFont);
+	if(newPara == true){
+		std::cout << "New Paragraph created" << std::endl;
+		if(currentPage->GetPageNumber() == 1){
+			yCoordinate = currentPage->GetPageSize().GetHeight() - 140;
+		}else{
+			yCoordinate = currentPage->GetPageSize().GetHeight() - 75;
+		}
+		paraPainter.BeginText(20, yCoordinate);
+		paraPainter.AddText(text);
+	}else{
+		paraPainter.AddText(text);
+	}
+	paraPainter.EndText();
+	paraPainter.FinishPage();
+	
+}
+
 void DrawListItem(std::string listItem){	
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
