@@ -60,6 +60,6 @@ void EndEquation(int eqNum){
 	output << "\\end{document}";
 	output.close();
 	system(("pdflatex "+Number+".tex").c_str());
-	DrawEquation(eqNum);
+	//DrawEquation(eqNum);
 }
 

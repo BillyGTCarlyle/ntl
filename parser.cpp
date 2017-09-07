@@ -29,13 +29,14 @@
 using namespace std;
 
 //Initialize regular expressions
-const regex newLineEx("\\\\");
+const regex newLineEx("//");
 const regex highlightEx(":: (.*) ::");
 const regex titleEx("#t (.*)");
 const regex listTitleEx("#l(.*)");
 const regex listItemEx("^ (.*)");
 const regex lineEx("#b");
 const regex equationEx("#e (.*)");
+const regex regularLineEx("(.*)");
 smatch matchTitle;
 smatch matchNewLine;
 smatch matchListTitle;
@@ -43,6 +44,7 @@ smatch matchListItem;
 smatch matchHighlight;
 smatch matchDrawLine;
 smatch matchEquation;
+smatch matchRegularLine;
 int equationNumber = 0;
 void parser(char* filePath){
 	vector<string> words;
@@ -51,6 +53,8 @@ void parser(char* filePath){
 	string word;
 	string space = " ";
 	size_t pos = 0;
+	bool newPara = true;
+	bool end = false;
 	ifstream inFile(filePath);
 	// Open input file
 	if(inFile.is_open()){
@@ -72,16 +76,23 @@ void parser(char* filePath){
 				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
 				InitializeDocument(equationNumber, matchEquation.str(1));
 				equationNumber++;
-			}else{
-				DrawParagraph(inLine, true);
+			}else if(regex_search(inLine, matchRegularLine, regularLineEx)){
+				cout << "Regular line detected" << endl;
+				while((pos = matchRegularLine.str(1).find(space)) != string::npos && !inFile.eof()){
+					word = matchRegularLine.str(1).substr(0, pos);
+					if(inFile.eof())
+						end = true;
+					DrawParagraph(word, newPara, end);
+					inLine.erase(0, pos + space.length());
+					if(newPara == true)
+						newPara = false;
+
+				}if(regex_search(inLine, matchNewLine, newLineEx)){
+				newPara = true;
+				}
+			}else if(regex_search(inLine, matchNewLine, newLineEx)){
+				newPara = true;
 			}
-			while((pos = inLine.find(space)) != string::npos){
-				word = inLine.substr(0, pos);
-				words.push_back(word);
-				
-				inLine.erase(0, pos + space.length());
-			}
-			words.push_back(word);
 		}
 		cout << words[0] << endl;
 		cout << words[2] << endl;

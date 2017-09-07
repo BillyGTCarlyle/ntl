@@ -1,4 +1,3 @@
-This is some general text.
 :: This is some highlighted text :: 
 #t Title
 #b
@@ -6,3 +5,5 @@ This is some general text.
 :: Highlighted text ::
 #e v = \frac{d}{t}
 #e f = f_0\left( 1 - \frac{v}{c} \right)
+This is some general text. fkldsjflksda //
+This is another paragraph

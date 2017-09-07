@@ -28,6 +28,8 @@ using namespace PoDoFo;
 
 PdfPage* currentPage = nullptr;
 PdfStreamedDocument* pDocument = nullptr;
+double yCoordinate = 785.0;
+double xCoordinate;
 
 int InitDocument(const char* fileName){
 	if (fileName == nullptr){
@@ -84,33 +86,30 @@ void DrawTitle(std::string documentTitle){
 	//Document information
 	pDocument->GetInfo()->SetCreator(PdfString("Billy Carlyle"));
 	pDocument->GetInfo()->SetAuthor(PdfString("Billy Carlyle"));
+	yCoordinate = (currentPage->GetPageSize().GetHeight() - 75.0);
 	NewPage();
 }
 
-void DrawParagraph(std::string text, bool newPara){
+void DrawParagraph(std::string text, bool newPara, bool end){
+	NewPage();
 	PdfFont* paraFont;
-	PdfPainter paraPainter;
-	int yCoordinate;
-
+	PdfPainter regularPainter;
 	paraFont = pDocument->CreateFont("Arial");
 	paraFont->SetFontSize(18.0);
-	paraPainter.SetPage(currentPage);
-	paraPainter.SetFont(paraFont);
+	regularPainter.SetPage(currentPage);
+	regularPainter.SetFont(paraFont);
 	if(newPara == true){
+		xCoordinate = 75.0;
+		yCoordinate += 18.0;
 		std::cout << "New Paragraph created" << std::endl;
-		if(currentPage->GetPageNumber() == 1){
-			yCoordinate = currentPage->GetPageSize().GetHeight() - 140;
-		}else{
-			yCoordinate = currentPage->GetPageSize().GetHeight() - 75;
-		}
-		paraPainter.BeginText(20, yCoordinate);
-		paraPainter.AddText(text);
+		regularPainter.DrawText(xCoordinate, yCoordinate, text);
+		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
 	}else{
-		paraPainter.AddText(text);
-	}
-	paraPainter.EndText();
-	paraPainter.FinishPage();
-	
+		std::cout << "New word added to para" << std::endl;
+		regularPainter.DrawText(xCoordinate, yCoordinate, text);
+		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
+	}	
+	regularPainter.FinishPage();
 }
 
 void DrawListItem(std::string listItem){	
@@ -131,11 +130,11 @@ void DrawListItem(std::string listItem){
 	listItemPainter.FinishPage();
 }
 
-void DrawEquation(int eqNum){
-	//Takes equation PDF and appends it to the main document
-	std::string Number = std::to_string(eqNum);
-	PdfMemDocument equation((Number+".pdf").c_str());
-}
+/*void DrawEquation(int eqNum){
+ *       //Takes equation PDF and appends it to the main document
+ *       std::string Number = std::to_string(eqNum);
+ *       PdfMemDocument equation((Number+".pdf").c_str());
+}*/
 
 void NewPage(){
 	PdfPage* newPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
