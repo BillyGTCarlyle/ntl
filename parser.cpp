@@ -46,6 +46,7 @@ smatch matchDrawLine;
 smatch matchEquation;
 smatch matchRegularLine;
 int equationNumber = 0;
+
 void parser(char* filePath){
 	vector<string> words;
 	vector<string> lines;
@@ -58,7 +59,6 @@ void parser(char* filePath){
 	ifstream inFile(filePath);
 	// Open input file
 	if(inFile.is_open()){
-
 		while(getline(inFile,inLine)){
 			lines.push_back(inLine);
 			if(regex_search(inLine, matchTitle, titleEx)){
@@ -78,24 +78,21 @@ void parser(char* filePath){
 				equationNumber++;
 			}else if(regex_search(inLine, matchRegularLine, regularLineEx)){
 				cout << "Regular line detected" << endl;
-				while((pos = matchRegularLine.str(1).find(space)) != string::npos && !inFile.eof()){
-					word = matchRegularLine.str(1).substr(0, pos);
-					if(inFile.eof())
-						end = true;
+				while((pos = inLine.find(space)) != string::npos){
+					word = inLine.substr(0, pos);
 					DrawParagraph(word, newPara, end);
 					inLine.erase(0, pos + space.length());
 					if(newPara == true)
 						newPara = false;
-
-				}if(regex_search(inLine, matchNewLine, newLineEx)){
+				}
+				DrawParagraph(inLine, newPara, end);
+				if(regex_search(inLine, matchNewLine, newLineEx)){
 				newPara = true;
 				}
 			}else if(regex_search(inLine, matchNewLine, newLineEx)){
 				newPara = true;
 			}
 		}
-		cout << words[0] << endl;
-		cout << words[2] << endl;
 		CloseDocument();
 		inFile.close();
 	}else{
