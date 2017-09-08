@@ -116,6 +116,7 @@ void DrawListItem(std::string listItem){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}	
+	NewPage();
 	PdfFont* listItemFont;
 	listItemFont = pDocument->CreateFont("Arial");
 	listItemFont->SetFontSize(18.0);
@@ -128,6 +129,20 @@ void DrawListItem(std::string listItem){
 	//Draw text
 	listItemPainter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
 	listItemPainter.FinishPage();
+}
+
+void DrawBreak(){
+	NewPage();
+	yCoordinate -= 20.0;
+	if (pDocument == nullptr){
+		throw new std::logic_error("DrawBreak() called before InitDocument().");
+	}
+	PdfPainter breakPainter;
+	breakPainter.SetPage(currentPage);
+	breakPainter.SetColor(0,0,0);
+	breakPainter.DrawLine(0.0, yCoordinate, currentPage->GetPageSize().GetWidth(), yCoordinate);
+	yCoordinate -= 20.0;
+	breakPainter.FinishPage();
 }
 
 /*void DrawEquation(int eqNum){

@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 
-void InitializeDocument(int eqNum, std::string eqString);
+void InitializeTexDocument(int eqNum, std::string eqString);
 void DrawLatexEquation(int eqNum, std::string eqString);
 void EndEquation(int eqNum);
 

@@ -24,7 +24,7 @@
 #include "equation.h"
 #include "render.h"
 
-void InitializeDocument(int eqNum, std::string eqString){
+void InitializeTexDocument(int eqNum, std::string eqString){
 	//Create and set up document
 	std::string Number = std::to_string(eqNum);
 	std::ofstream output(Number+".tex", std::ofstream::out);

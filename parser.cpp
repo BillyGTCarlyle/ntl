@@ -67,6 +67,7 @@ void parser(char* filePath){
 				DrawTitle(matchTitle.str(1));
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;
+				DrawBreak();
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
 				cout << "Item: " << matchListItem.str(1) << endl;
 				DrawListItem(matchListItem.str(1));
@@ -74,7 +75,7 @@ void parser(char* filePath){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
 			}else if(regex_search(inLine, matchEquation, equationEx)){
 				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
-				InitializeDocument(equationNumber, matchEquation.str(1));
+				InitializeTexDocument(equationNumber, matchEquation.str(1));
 				equationNumber++;
 			}else if(regex_search(inLine, matchRegularLine, regularLineEx)){
 				cout << "Regular line detected" << endl;
