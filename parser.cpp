@@ -80,15 +80,22 @@ void parser(char* filePath){
 				cout << "Regular line detected" << endl;
 				while((pos = inLine.find(space)) != string::npos){
 					word = inLine.substr(0, pos);
-					DrawParagraph(word, newPara, end);
+					if(word != "//"){
+						DrawParagraph(word, newPara, end);
+						if(newPara == true)
+							newPara = false;
+					}else{
+						newPara = true;
+					}
 					inLine.erase(0, pos + space.length());
-					if(newPara == true)
-						newPara = false;
 				}
-				DrawParagraph(inLine, newPara, end);
-				if(regex_search(inLine, matchNewLine, newLineEx)){
-				newPara = true;
+				if(inLine != "//"){
+					DrawParagraph(inLine, newPara, end);
 				}
+				else{
+					newPara = true;
+				}
+					
 			}else if(regex_search(inLine, matchNewLine, newLineEx)){
 				newPara = true;
 			}

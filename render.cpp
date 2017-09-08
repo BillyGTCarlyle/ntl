@@ -100,7 +100,7 @@ void DrawParagraph(std::string text, bool newPara, bool end){
 	regularPainter.SetFont(paraFont);
 	if(newPara == true){
 		xCoordinate = 75.0;
-		yCoordinate += 18.0;
+		yCoordinate -= 18.0;
 		std::cout << "New Paragraph created" << std::endl;
 		regularPainter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
