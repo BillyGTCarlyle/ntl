@@ -37,6 +37,7 @@ const regex listItemEx("^ (.*)");
 const regex lineEx("#b");
 const regex equationEx("#e (.*)");
 const regex regularLineEx("(.*)");
+const regex endOfFileEx("#f");
 smatch matchTitle;
 smatch matchNewLine;
 smatch matchListTitle;
@@ -45,6 +46,7 @@ smatch matchHighlight;
 smatch matchDrawLine;
 smatch matchEquation;
 smatch matchRegularLine;
+smatch matchEndOfFile;
 int equationNumber = 0;
 
 void parser(char* filePath){
@@ -55,7 +57,6 @@ void parser(char* filePath){
 	string space = " ";
 	size_t pos = 0;
 	bool newPara = true;
-	bool end = false;
 	ifstream inFile(filePath);
 	// Open input file
 	if(inFile.is_open()){
@@ -64,13 +65,19 @@ void parser(char* filePath){
 			if(regex_search(inLine, matchTitle, titleEx)){
 				cout << "Title is " << matchTitle.str(1) << endl;
 				InitDocument((matchTitle.str(1)+".pdf").c_str());
-				DrawTitle(matchTitle.str(1));
+				//if(regex_search(inLine, matchEndOfFile, endOfFileEx))
+				//	DrawTitle(matchTitle.str(1), true);
+				//else
+					DrawTitle(matchTitle.str(1), false);
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;
-				DrawBreak();
+				if(regex_search(inLine, matchEndOfFile, endOfFileEx))
+					DrawBreak(true);
+				else
+					DrawBreak(false);
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
 				cout << "Item: " << matchListItem.str(1) << endl;
-				DrawListItem(matchListItem.str(1));
+				DrawListItem(matchListItem.str(1), false);
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
 				DrawHighlighted(matchHighlight.str(1), true, false);
@@ -83,7 +90,7 @@ void parser(char* filePath){
 				while((pos = inLine.find(space)) != string::npos){
 					word = inLine.substr(0, pos);
 					if(word != "//"){
-						DrawParagraph(word, newPara, end);
+						DrawParagraph(word, newPara, false);
 						if(newPara == true)
 							newPara = false;
 					}else{
@@ -92,7 +99,7 @@ void parser(char* filePath){
 					inLine.erase(0, pos + space.length());
 				}
 				if(inLine != "//"){
-					DrawParagraph(inLine, newPara, end);
+					DrawParagraph(inLine, newPara, false);
 				}
 				else{
 					newPara = true;

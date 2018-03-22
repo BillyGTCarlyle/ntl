@@ -28,6 +28,7 @@ using namespace PoDoFo;
 
 PdfPage* currentPage = nullptr;
 PdfStreamedDocument* pDocument = nullptr;
+PdfPainter painter;
 double yCoordinate = 785.0;
 double xCoordinate;
 
@@ -43,27 +44,26 @@ int InitDocument(const char* fileName){
 	return 0;
 }
 
-void DrawTitle(std::string documentTitle){
+void DrawTitle(std::string documentTitle, bool end){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawTitle() called before InitDocument().");
 	}
 	PdfPage* titlePage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
-		if(!titlePage){
+	if(!titlePage){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
 	}
 	currentPage = titlePage;
 	PdfFont* dateFont;	
-	PdfPainter titlePainter;
 	PdfFont* titleFont;
 	//Draw Title
 	titleFont = pDocument->CreateFont("Arial");
 	titleFont->SetFontSize(30);
-	titlePainter.SetPage(currentPage);
-	titlePainter.SetFont(titleFont);
-	titlePainter.DrawText((currentPage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), currentPage-> GetPageSize().GetHeight() - 75, documentTitle );
+	painter.SetPage(currentPage);
+	painter.SetFont(titleFont);
+	painter.DrawText((currentPage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), currentPage-> GetPageSize().GetHeight() - 75, documentTitle );
 
 	//Draw Date
-	titlePainter.SetPage(currentPage);
+	painter.SetPage(currentPage);
 
 	dateFont = pDocument->CreateFont("Arial");
 
@@ -79,9 +79,8 @@ void DrawTitle(std::string documentTitle){
 	oss << std::put_time(&tm, "%d-%m-%Y");
 	auto dateStr = oss.str();
 	
-	titlePainter.SetFont(dateFont);
-	titlePainter.DrawText(currentPage->GetPageSize().GetWidth() - (dateFont->GetFontMetrics()->StringWidth(dateStr)) - 20, currentPage->GetPageSize().GetHeight() - (dateFont->GetFontMetrics()->GetFontSize()) - 20, dateStr);
-	titlePainter.FinishPage();
+	painter.SetFont(dateFont);
+	painter.DrawText(currentPage->GetPageSize().GetWidth() - (dateFont->GetFontMetrics()->StringWidth(dateStr)) - 20, currentPage->GetPageSize().GetHeight() - (dateFont->GetFontMetrics()->GetFontSize()) - 20, dateStr);
 
 	//Document information
 	pDocument->GetInfo()->SetCreator(PdfString("Billy Carlyle"));
@@ -91,81 +90,77 @@ void DrawTitle(std::string documentTitle){
 }
 
 void DrawParagraph(std::string text, bool newPara, bool end){
-	NewPage();
+	//if(yCoordinate < 40.0 || end){
+	//	//regularPainter.FinishPage();
+	//	NewPage();
+	//}
 	PdfFont* paraFont;
-	PdfPainter regularPainter;
 	paraFont = pDocument->CreateFont("Arial");
 	paraFont->SetFontSize(18.0);
-	regularPainter.SetPage(currentPage);
-	regularPainter.SetFont(paraFont);
+	painter.SetFont(paraFont);
 	if(newPara == true){
 		xCoordinate = 75.0;
 		yCoordinate -= 18.0;
 		std::cout << "New Paragraph created" << std::endl;
-		regularPainter.DrawText(xCoordinate, yCoordinate, text);
+		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
 	}else{
 		std::cout << "New word added to para" << std::endl;
-		regularPainter.DrawText(xCoordinate, yCoordinate, text);
+		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
-	}	
-	regularPainter.FinishPage();
+	}
+	NewPage();
 }
 
 void DrawHighlighted(std::string text, bool newPara, bool end){
-	NewPage();
+	//if(yCoordinate < 40.0 || end){
+	//	//highlightPainter.FinishPage();
+	//	NewPage();
+	//}
 	PdfFont* highlightFont;
-	PdfPainter highlightPainter;
 	highlightFont = pDocument->CreateFont("Arial");
 	highlightFont->IsBold();
 	highlightFont->SetFontSize(18.0);
-	highlightPainter.SetPage(currentPage);
-	highlightPainter.SetFont(highlightFont);
+	painter.SetFont(highlightFont);
 	if(newPara == true){
 		xCoordinate = 75.0;
 		yCoordinate -= 18.0;
 		std::cout << "New Paragraph created" << std::endl;
-		highlightPainter.DrawText(xCoordinate, yCoordinate, text);
+		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
 	}else{
 		std::cout << "New word added to para" << std::endl;
-		highlightPainter.DrawText(xCoordinate, yCoordinate, text);
+		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
 	}
-	highlightPainter.FinishPage();
+	NewPage();
 }
 
-void DrawListItem(std::string listItem){	
+void DrawListItem(std::string listItem, bool end){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}	
-	NewPage();
 	PdfFont* listItemFont;
 	listItemFont = pDocument->CreateFont("Arial");
 	listItemFont->SetFontSize(18.0);
-	PdfPainter listItemPainter;
-	listItemPainter.SetPage(currentPage);
-	listItemPainter.SetFont(listItemFont);
-	listItemPainter.SetColor(0,0,0);
+	painter.SetFont(listItemFont);
+	painter.SetColor(0,0,0);
 	//Draw bullet point
-	listItemPainter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 10.0);
+	painter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 10.0);
 	//Draw text
-	listItemPainter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
-	listItemPainter.FinishPage();
+	painter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
+	NewPage();
 }
 
-void DrawBreak(){
-	NewPage();
+void DrawBreak(bool end){
 	yCoordinate -= 20.0;
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawBreak() called before InitDocument().");
 	}
-	PdfPainter breakPainter;
-	breakPainter.SetPage(currentPage);
-	breakPainter.SetColor(0,0,0);
-	breakPainter.DrawLine(0.0, yCoordinate, currentPage->GetPageSize().GetWidth(), yCoordinate);
+	painter.SetColor(0,0,0);
+	painter.DrawLine(0.0, yCoordinate, currentPage->GetPageSize().GetWidth(), yCoordinate);
 	yCoordinate -= 20.0;
-	breakPainter.FinishPage();
+	NewPage();
 }
 
 /*void DrawEquation(int eqNum){
@@ -175,8 +170,10 @@ void DrawBreak(){
 }*/
 
 void NewPage(){
+	painter.FinishPage();
 	PdfPage* newPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
 	currentPage = newPage;
+	painter.SetPage(currentPage);
 }
 
 int CloseDocument(){
