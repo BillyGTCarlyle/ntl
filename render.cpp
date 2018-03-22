@@ -44,7 +44,7 @@ int InitDocument(const char* fileName){
 	return 0;
 }
 
-void DrawTitle(std::string documentTitle, bool end){
+void DrawTitle(std::string documentTitle){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawTitle() called before InitDocument().");
 	}
@@ -89,7 +89,7 @@ void DrawTitle(std::string documentTitle, bool end){
 	NewPage();
 }
 
-void DrawParagraph(std::string text, bool newPara, bool end){
+void DrawParagraph(std::string text, bool newPara){
 	//if(yCoordinate < 40.0 || end){
 	//	//regularPainter.FinishPage();
 	//	NewPage();
@@ -112,7 +112,7 @@ void DrawParagraph(std::string text, bool newPara, bool end){
 	NewPage();
 }
 
-void DrawHighlighted(std::string text, bool newPara, bool end){
+void DrawHighlighted(std::string text, bool newPara){
 	//if(yCoordinate < 40.0 || end){
 	//	//highlightPainter.FinishPage();
 	//	NewPage();
@@ -136,7 +136,7 @@ void DrawHighlighted(std::string text, bool newPara, bool end){
 	NewPage();
 }
 
-void DrawListItem(std::string listItem, bool end){
+void DrawListItem(std::string listItem){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}	
@@ -152,7 +152,7 @@ void DrawListItem(std::string listItem, bool end){
 	NewPage();
 }
 
-void DrawBreak(bool end){
+void DrawBreak(){
 	yCoordinate -= 20.0;
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawBreak() called before InitDocument().");
@@ -162,7 +162,6 @@ void DrawBreak(bool end){
 	yCoordinate -= 20.0;
 	NewPage();
 }
-
 /*void DrawEquation(int eqNum){
  *       //Takes equation PDF and appends it to the main document
  *       std::string Number = std::to_string(eqNum);
@@ -177,6 +176,7 @@ void NewPage(){
 }
 
 int CloseDocument(){
+	painter.FinishPage();
 	if (pDocument == nullptr){
 		return 1;
 	}

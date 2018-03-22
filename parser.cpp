@@ -37,7 +37,6 @@ const regex listItemEx("^ (.*)");
 const regex lineEx("#b");
 const regex equationEx("#e (.*)");
 const regex regularLineEx("(.*)");
-const regex endOfFileEx("#f");
 smatch matchTitle;
 smatch matchNewLine;
 smatch matchListTitle;
@@ -46,7 +45,6 @@ smatch matchHighlight;
 smatch matchDrawLine;
 smatch matchEquation;
 smatch matchRegularLine;
-smatch matchEndOfFile;
 int equationNumber = 0;
 
 void parser(char* filePath){
@@ -65,22 +63,16 @@ void parser(char* filePath){
 			if(regex_search(inLine, matchTitle, titleEx)){
 				cout << "Title is " << matchTitle.str(1) << endl;
 				InitDocument((matchTitle.str(1)+".pdf").c_str());
-				//if(regex_search(inLine, matchEndOfFile, endOfFileEx))
-				//	DrawTitle(matchTitle.str(1), true);
-				//else
-					DrawTitle(matchTitle.str(1), false);
+				DrawTitle(matchTitle.str(1));
 			}else if(regex_search(inLine, matchDrawLine, lineEx)){
 				cout << "Line detected" << endl;
-				if(regex_search(inLine, matchEndOfFile, endOfFileEx))
-					DrawBreak(true);
-				else
-					DrawBreak(false);
+				DrawBreak();
 			}else if(regex_search(inLine, matchListItem, listItemEx)){
 				cout << "Item: " << matchListItem.str(1) << endl;
-				DrawListItem(matchListItem.str(1), false);
+				DrawListItem(matchListItem.str(1));
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
-				DrawHighlighted(matchHighlight.str(1), true, false);
+				DrawHighlighted(matchHighlight.str(1), true);
 			}else if(regex_search(inLine, matchEquation, equationEx)){
 				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
 				InitializeTexDocument(equationNumber, matchEquation.str(1));
@@ -90,7 +82,7 @@ void parser(char* filePath){
 				while((pos = inLine.find(space)) != string::npos){
 					word = inLine.substr(0, pos);
 					if(word != "//"){
-						DrawParagraph(word, newPara, false);
+						DrawParagraph(word, newPara);
 						if(newPara == true)
 							newPara = false;
 					}else{
@@ -99,12 +91,11 @@ void parser(char* filePath){
 					inLine.erase(0, pos + space.length());
 				}
 				if(inLine != "//"){
-					DrawParagraph(inLine, newPara, false);
+					DrawParagraph(inLine, newPara);
 				}
 				else{
 					newPara = true;
-				}
-					
+				}					
 			}else if(regex_search(inLine, matchNewLine, newLineEx)){
 				newPara = true;
 			}

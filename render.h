@@ -28,12 +28,12 @@
 #include <string>
 
 int InitDocument(const char* fileName);
-void DrawTitle(std::string documentTitle, bool end);
-void DrawParagraph(std::string text, bool newPara, bool end);
-void DrawHighlighted(std::string text, bool newPara, bool end);
-void DrawListItem(std::string listItem, bool end);
+void DrawTitle(std::string documentTitle);
+void DrawParagraph(std::string text, bool newPara);
+void DrawHighlighted(std::string text, bool newPara);
+void DrawListItem(std::string listItem);
 void DrawEquation(int eqNum);
-void DrawBreak(bool end);
+void DrawBreak();
 void NewPage();
 int CloseDocument();
 #endif
