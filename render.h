@@ -30,6 +30,7 @@
 int InitDocument(const char* fileName);
 void DrawTitle(std::string documentTitle);
 void DrawParagraph(std::string text, bool newPara, bool end);
+void DrawHighlighted(std::string text, bool newPara, bool end);
 void DrawListItem(std::string listItem);
 void DrawEquation(int eqNum);
 void DrawBreak();

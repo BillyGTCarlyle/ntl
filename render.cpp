@@ -112,6 +112,29 @@ void DrawParagraph(std::string text, bool newPara, bool end){
 	regularPainter.FinishPage();
 }
 
+void DrawHighlighted(std::string text, bool newPara, bool end){
+	NewPage();
+	PdfFont* highlightFont;
+	PdfPainter highlightPainter;
+	highlightFont = pDocument->CreateFont("Arial");
+	highlightFont->IsBold();
+	highlightFont->SetFontSize(18.0);
+	highlightPainter.SetPage(currentPage);
+	highlightPainter.SetFont(highlightFont);
+	if(newPara == true){
+		xCoordinate = 75.0;
+		yCoordinate -= 18.0;
+		std::cout << "New Paragraph created" << std::endl;
+		highlightPainter.DrawText(xCoordinate, yCoordinate, text);
+		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
+	}else{
+		std::cout << "New word added to para" << std::endl;
+		highlightPainter.DrawText(xCoordinate, yCoordinate, text);
+		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
+	}
+	highlightPainter.FinishPage();
+}
+
 void DrawListItem(std::string listItem){	
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");

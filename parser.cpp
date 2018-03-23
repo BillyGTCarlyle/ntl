@@ -73,6 +73,7 @@ void parser(char* filePath){
 				DrawListItem(matchListItem.str(1));
 			}else if(regex_search(inLine, matchHighlight, highlightEx)){
 				cout << "Highlighted text: " << matchHighlight.str(1) << endl;
+				DrawHighlighted(matchHighlight.str(1), true, false);
 			}else if(regex_search(inLine, matchEquation, equationEx)){
 				cout << "Equation in LaTeX: " << matchEquation.str(1) << endl;
 				InitializeTexDocument(equationNumber, matchEquation.str(1));
