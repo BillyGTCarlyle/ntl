@@ -56,7 +56,7 @@ void DrawTitle(std::string documentTitle){
 	PdfFont* dateFont;	
 	PdfFont* titleFont;
 	//Draw Title
-	titleFont = pDocument->CreateFont("Arial");
+	titleFont = pDocument->CreateFont("Times New Roman");
 	titleFont->SetFontSize(30);
 	painter.SetPage(currentPage);
 	painter.SetFont(titleFont);
@@ -65,7 +65,7 @@ void DrawTitle(std::string documentTitle){
 	//Draw Date
 	painter.SetPage(currentPage);
 
-	dateFont = pDocument->CreateFont("Arial");
+	dateFont = pDocument->CreateFont("Times New Roman");
 
 	if(!dateFont){
 		PODOFO_RAISE_ERROR(ePdfError_InvalidHandle);
@@ -95,7 +95,7 @@ void DrawParagraph(std::string text, bool newPara){
 	//	NewPage();
 	//}
 	PdfFont* paraFont;
-	paraFont = pDocument->CreateFont("Arial");
+	paraFont = pDocument->CreateFont("Times New Roman");
 	paraFont->SetFontSize(18.0);
 	painter.SetFont(paraFont);
 	if(newPara == true){
@@ -109,7 +109,6 @@ void DrawParagraph(std::string text, bool newPara){
 		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
 	}
-	NewPage();
 }
 
 void DrawHighlighted(std::string text, bool newPara){
@@ -118,7 +117,7 @@ void DrawHighlighted(std::string text, bool newPara){
 	//	NewPage();
 	//}
 	PdfFont* highlightFont;
-	highlightFont = pDocument->CreateFont("Arial");
+	highlightFont = pDocument->CreateFont("Times New Roman");
 	highlightFont->IsBold();
 	highlightFont->SetFontSize(18.0);
 	painter.SetFont(highlightFont);
@@ -133,7 +132,6 @@ void DrawHighlighted(std::string text, bool newPara){
 		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
 	}
-	NewPage();
 }
 
 void DrawListItem(std::string listItem){
@@ -141,7 +139,7 @@ void DrawListItem(std::string listItem){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}	
 	PdfFont* listItemFont;
-	listItemFont = pDocument->CreateFont("Arial");
+	listItemFont = pDocument->CreateFont("Times New Roman");
 	listItemFont->SetFontSize(18.0);
 	painter.SetFont(listItemFont);
 	painter.SetColor(0,0,0);
@@ -149,7 +147,6 @@ void DrawListItem(std::string listItem){
 	painter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 10.0);
 	//Draw text
 	painter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
-	NewPage();
 }
 
 void DrawBreak(){
@@ -160,7 +157,6 @@ void DrawBreak(){
 	painter.SetColor(0,0,0);
 	painter.DrawLine(0.0, yCoordinate, currentPage->GetPageSize().GetWidth(), yCoordinate);
 	yCoordinate -= 20.0;
-	NewPage();
 }
 /*void DrawEquation(int eqNum){
  *       //Takes equation PDF and appends it to the main document
