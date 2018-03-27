@@ -60,6 +60,7 @@ void DrawTitle(std::string documentTitle){
 	titleFont->SetFontSize(30);
 	painter.SetPage(currentPage);
 	painter.SetFont(titleFont);
+	painter.SetColor(0,0,0);
 	painter.DrawText((currentPage->GetPageSize().GetWidth() / 2) - (titleFont->GetFontMetrics()->StringWidth(documentTitle) / 2), currentPage-> GetPageSize().GetHeight() - 75, documentTitle );
 
 	//Draw Date
@@ -97,6 +98,7 @@ void DrawParagraph(std::string text, bool newPara){
 	PdfFont* paraFont;
 	paraFont = pDocument->CreateFont("Times New Roman");
 	paraFont->SetFontSize(18.0);
+	paraFont->SetUnderlined(false);
 	painter.SetFont(paraFont);
 	if(newPara == true){
 		xCoordinate = 75.0;
@@ -105,9 +107,17 @@ void DrawParagraph(std::string text, bool newPara){
 		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
 	}else{
-		std::cout << "New word added to para" << std::endl;
-		painter.DrawText(xCoordinate, yCoordinate, text);
-		xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
+		if(xCoordinate < (currentPage->GetPageSize().GetWidth() - 85.0) - paraFont->GetFontMetrics()->StringWidth(text)){
+			std::cout << "New word added to para" << std::endl;
+			painter.DrawText(xCoordinate, yCoordinate, text);
+			xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
+		}else{
+			std::cout << "New word added to para" << std::endl;
+			xCoordinate = 75.0;
+			yCoordinate -= 18.0;
+			painter.DrawText(xCoordinate, yCoordinate, text);
+			xCoordinate += paraFont->GetFontMetrics()->StringWidth(text+" ");
+		}
 	}
 }
 
@@ -118,9 +128,11 @@ void DrawHighlighted(std::string text, bool newPara){
 	//}
 	PdfFont* highlightFont;
 	highlightFont = pDocument->CreateFont("Times New Roman");
-	highlightFont->IsBold();
+	highlightFont->SetUnderlined(true);
+	//highlightFont->SetBold(true);
 	highlightFont->SetFontSize(18.0);
 	painter.SetFont(highlightFont);
+	painter.SetColor(1,0,0);
 	if(newPara == true){
 		xCoordinate = 75.0;
 		yCoordinate -= 18.0;
@@ -132,21 +144,26 @@ void DrawHighlighted(std::string text, bool newPara){
 		painter.DrawText(xCoordinate, yCoordinate, text);
 		xCoordinate += highlightFont->GetFontMetrics()->StringWidth(text+" ");
 	}
+	painter.SetColor(0,0,0);
 }
 
 void DrawListItem(std::string listItem){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
-	}	
+	}		
 	PdfFont* listItemFont;
 	listItemFont = pDocument->CreateFont("Times New Roman");
 	listItemFont->SetFontSize(18.0);
 	painter.SetFont(listItemFont);
-	painter.SetColor(0,0,0);
 	//Draw bullet point
-	painter.Circle(20.0, currentPage->GetPageSize().GetHeight() - 40.0, 10.0);
+	xCoordinate = 75.0;
+	yCoordinate -= 18.0;
+	painter.SetColor(0,0,0);
+	painter.Circle(xCoordinate, yCoordinate + 5, 4.0);
+
+	xCoordinate += 15;
 	//Draw text
-	painter.DrawText(50.0, currentPage->GetPageSize().GetHeight() - 40, listItem);
+	painter.DrawText(xCoordinate, yCoordinate, listItem);
 }
 
 void DrawBreak(){
@@ -154,7 +171,6 @@ void DrawBreak(){
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawBreak() called before InitDocument().");
 	}
-	painter.SetColor(0,0,0);
 	painter.DrawLine(0.0, yCoordinate, currentPage->GetPageSize().GetWidth(), yCoordinate);
 	yCoordinate -= 20.0;
 }
@@ -169,6 +185,8 @@ void NewPage(){
 	PdfPage* newPage = pDocument->CreatePage(PdfPage::CreateStandardPageSize(ePdfPageSize_A4));
 	currentPage = newPage;
 	painter.SetPage(currentPage);
+	yCoordinate = 785.0;
+	xCoordinate = 75.0;
 }
 
 int CloseDocument(){

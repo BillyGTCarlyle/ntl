@@ -59,7 +59,8 @@ void EndEquation(int eqNum){
 	//End the document and close the file
 	output << "\\end{document}";
 	output.close();
-	system(("pdflatex "+Number+".tex").c_str());
+	system(("pdflatex "+Number+".tex" + " >/dev/null").c_str());
+	std::cout << "Equation " << eqNum << " generated" << std::endl;
 	//DrawEquation(eqNum);
 }
 
