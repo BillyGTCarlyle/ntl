@@ -91,10 +91,8 @@ void DrawTitle(std::string documentTitle){
 }
 
 void DrawParagraph(std::string text, bool newPara){
-	//if(yCoordinate < 40.0 || end){
-	//	//regularPainter.FinishPage();
-	//	NewPage();
-	//}
+	if(yCoordinate < 75.0)
+		NewPage();
 	PdfFont* paraFont;
 	paraFont = pDocument->CreateFont("Times New Roman");
 	paraFont->SetFontSize(18.0);
@@ -122,17 +120,15 @@ void DrawParagraph(std::string text, bool newPara){
 }
 
 void DrawHighlighted(std::string text, bool newPara){
-	//if(yCoordinate < 40.0 || end){
-	//	//highlightPainter.FinishPage();
-	//	NewPage();
-	//}
+	if(yCoordinate < 75.0)
+		NewPage();
 	PdfFont* highlightFont;
 	highlightFont = pDocument->CreateFont("Times New Roman");
 	highlightFont->SetUnderlined(true);
 	//highlightFont->SetBold(true);
 	highlightFont->SetFontSize(18.0);
 	painter.SetFont(highlightFont);
-	painter.SetColor(1,0,0);
+	//painter.SetColor(1,0,0);
 	if(newPara == true){
 		xCoordinate = 75.0;
 		yCoordinate -= 18.0;
@@ -148,6 +144,8 @@ void DrawHighlighted(std::string text, bool newPara){
 }
 
 void DrawListItem(std::string listItem){
+	if(yCoordinate < 75.0)
+		NewPage();
 	if (pDocument == nullptr){
 		throw new std::logic_error("DrawListItem() called before InitDocument().");
 	}		
