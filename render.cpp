@@ -154,7 +154,7 @@ void DrawListItem(std::string listItem){
 	listItemFont->SetFontSize(18.0);
 	painter.SetFont(listItemFont);
 	//Draw bullet point
-	xCoordinate = 75.0;
+	xCoordinate = 78.0;
 	yCoordinate -= 18.0;
 	painter.SetColor(0,0,0);
 	painter.Circle(xCoordinate, yCoordinate + 5, 4.0);

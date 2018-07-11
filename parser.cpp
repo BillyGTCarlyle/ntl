@@ -30,7 +30,7 @@ using namespace std;
 
 //Initialize regular expressions
 const regex newLineEx("//");
-const regex highlightEx(":: (.*) ::");
+const regex highlightEx("::(.*)::");
 const regex titleEx("#t (.*)");
 const regex listTitleEx("#l(.*)");
 const regex listItemEx("^ (.*)");
@@ -90,7 +90,7 @@ void parser(char* filePath){
 					}
 					inLine.erase(0, pos + space.length());
 				}
-				if(inLine != "//"){
+				if(inLine != "//" && !inLine.empty()){
 					DrawParagraph(inLine, newPara);
 				}
 				else{

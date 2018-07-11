@@ -7,4 +7,6 @@
 #e f = f_0\left( 1 - \frac{v}{c} \right)
 This is some general text, it lasts quite a while so that
 the render file should put some of this text on a new line, if
-everything works as it should. // This is a new paragraph
+everything works as it should. // This is a new paragraph //
+
+This - paragraph has (parenthasis) //
