@@ -1,6 +1,8 @@
 # NTL
 NTL stands for Note-Taking Language and is a simple markup language written with speed and readability in mind.
 
+Please note this project is no longer maintained, and will not compile due to major changes to its dependencies (PoDoFo).
+
 ## The Idea
 The idea begin NTL is that no one should have to worry about formatting their notes while they're writing them, all focus should be on the content itself.
 The way this is adressed is by using single-character commands for elements such as the document title, list names, section names etc. 
